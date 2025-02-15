@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dimitrios Pertsinidis",
+  "license": "ISC",
+  "description": "This is an assignment for Full-Stack Web Application @ Voda.ai",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
