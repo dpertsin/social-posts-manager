@@ -49,3 +49,32 @@ Refer to the [requirements document](../docs/requirements.md) for detailed featu
 - User Registration & Authentication
 - Data Persistence
 - Bonus Features (Optional)
+
+### Project Structure
+
+TODO: Add the project structure
+
+```json
+social-posts-manager/
+├── client/                 # React frontend
+└── server/             # Express backend
+```
+
+### Backend
+
+- **express:** framework for our app
+- **body-parser:** middleware to handle incoming requests as JSON
+- **jest:** testing framework for unit and integration tests
+- **supertest:** library for testing HTTP endpoints
+- **nodemon:** to auto restart server automatically when files change
+- **dotenv:** to manage environment variables
+- **jsonwebtoken:** to generate the JWT
+- **axios:** promise-based HTTP client for the browser and Node.js
+- **cookie-parser:** middleware to parse cookies
+- **debug:** debugging utility
+- **morgan:** HTTP request logger middleware for Node.js
+- **jest-mock:** to mock functions for testing
+- **mongoose:** MongoDB object modeling tool
+- **mongodb:** MongoDB driver for Node.js
+
+### Frontend
