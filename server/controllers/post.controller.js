@@ -34,13 +34,17 @@ const populateSamplePosts = async (req, res) => {
  */
 const addPost = async (req, res) => {
   try {
-    const post = await createPost(req.body);
+    const { title, body } = req.body;
+    const userId = req.user.id; // the user ID is stored in req.user by the auth middleware
+    if (!title || !body) {
+      return res.status(400).json({ error: "Title and body are required." });
+    }
+    const post = await createPost({ title, body, userId });
     res.status(201).json(post);
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
   }
 };
-
 
 /**
  * List all posts from the database

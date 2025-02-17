@@ -68,7 +68,6 @@ social-posts-manager/
 - **supertest:** library for testing HTTP endpoints
 - **nodemon:** to auto restart server automatically when files change
 - **dotenv:** to manage environment variables
-- **jsonwebtoken:** to generate the JWT
 - **axios:** promise-based HTTP client for the browser and Node.js
 - **cookie-parser:** middleware to parse cookies
 - **debug:** debugging utility
@@ -76,5 +75,7 @@ social-posts-manager/
 - **jest-mock:** to mock functions for testing
 - **mongoose:** MongoDB object modeling tool
 - **mongodb:** MongoDB driver for Node.js
+- **bcrypt:** to hash passwords
+- **jsonwebtoken:** to generate the JWT tokens
 
 ### Frontend

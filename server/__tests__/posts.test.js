@@ -12,7 +12,7 @@ const postService = require("../services/post.service");
  * Mocking the post service to avoid making actual API calls
  */
 jest.mock("../services/post.service");
-
+// TODO: Maybe trasnfer the POST APIs to __mocks__ and do the tests there: https://jestjs.io/docs/manual-mocks
 // TODO: When I finish the project, then connect the tests with the actual database, and test the actual database operations.
 describe("Post API", () => {
   beforeEach(() => {
@@ -45,7 +45,7 @@ describe("Post API", () => {
       });
   });
 
-  it("POST /api/posts --> should create a new post", () => {
+  it("POST /api/posts --> should not create a new post because the user isn't authenticated", () => {
     const newPost = { title: "Test Post", body: "This is a test post" };
     postService.createPost.mockResolvedValue(newPost);
 
@@ -53,15 +53,7 @@ describe("Post API", () => {
       .post("/api/posts")
       .send(newPost)
       .expect("Content-Type", /json/)
-      .expect(201)
-      .then((response) => {
-        expect(response.body).toEqual(
-          expect.objectContaining({
-            title: expect.any(String),
-            body: expect.any(String),
-          })
-        );
-      });
+      .expect(401);
   });
 
   it("GET /api/posts --> should return all posts", () => {

@@ -14,6 +14,8 @@ require("dotenv").config();
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var postRouter = require("./routes/post.route");
+var authRouter = require("./routes/auth.route");
+
 var connectDB = require("./database");
 
 var app = express();
@@ -30,5 +32,6 @@ app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/auth", authRouter);
 
 module.exports = app;

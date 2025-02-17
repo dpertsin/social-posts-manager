@@ -11,6 +11,8 @@ const {
   listPosts,
 } = require("../controllers/post.controller");
 
+const authMiddleware = require("../middlewares/auth.middleware");
+
 const router = express.Router();
 
 /* Default router: "/api/posts" */
@@ -18,7 +20,7 @@ const router = express.Router();
 /* POST  to populate 100 sample posts */
 router.post("/populate", populateSamplePosts);
 /* POST to add a new post */
-router.post("/", addPost);
+router.post("/", authMiddleware, addPost);
 /* GET to get all the posts */
 router.get("/", listPosts);
 

@@ -4,15 +4,17 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "NODE_ENV=test jest --watchAll --detectOpenHandles"
+    "test": "jest --watchAll --detectOpenHandles"
   },
   "dependencies": {
     "axios": "^1.7.9",
+    "bcrypt": "^5.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.4.7",
     "express": "~4.16.1",
     "jest-mock": "^29.7.0",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.1",
     "morgan": "~1.9.1",

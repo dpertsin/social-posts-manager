@@ -23,8 +23,8 @@ const fetchSamplePosts = async () => {
  * @param {Object} postData
  * @returns {Promise<Post>} A promise that resolves to a Post object
  */
-const createPost = async (postData) => {
-  const post = new Post(postData);
+const createPost = async ({title, body, userId}) => {
+  const post = new Post({title, body, userId});
   await post.save();
   return post;
 };
