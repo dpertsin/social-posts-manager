@@ -85,7 +85,7 @@ describe("💌 Like Routes Testing", () => {
       .send({ entityType: "Post" })
       .expect(200);
 
-    expect(response.body.message).toBe("All liked Post cleared. 🧹💨");
+    expect(response.body.message).toBe("All liked Posts cleared. 🧹💨");
 
     const post = await Post.findById(postId);
     expect(post.likesCount).toBe(0);
