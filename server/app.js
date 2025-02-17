@@ -1,5 +1,5 @@
 /**
- * This file is the entry point for the server. 
+ * This file is the entry point for the server.
  * It sets up the server and mounts the routers.
  * @exports app
  */
@@ -7,6 +7,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var cors = require("cors");
 
 require("dotenv").config();
 
@@ -27,6 +28,7 @@ app.use(express.json()); // Middleware to parse JSON bodies
 app.use(express.urlencoded({ extended: false })); // Parse URL-encoded bodies
 app.use(cookieParser()); // Parse Cookie headers
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files
+app.use(cors()); // Enable CORS for all requests
 
 /*  Mount the routers on the app */
 app.use("/", indexRouter);

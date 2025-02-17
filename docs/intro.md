@@ -77,5 +77,6 @@ social-posts-manager/
 - **mongodb:** MongoDB driver for Node.js
 - **bcrypt:** to hash passwords
 - **jsonwebtoken:** to generate the JWT tokens
+- **cors:** to enable CORS in our app (Cross-Origin Resource Sharing) for security
 
 ### Frontend
