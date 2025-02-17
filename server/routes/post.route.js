@@ -2,6 +2,7 @@
  * This file defines the routes for the post entity (CRUD operations)
  * @requires express
  * @requires post.controller
+ * @requires auth.middleware
  * @exports router
  */
 var express = require("express");

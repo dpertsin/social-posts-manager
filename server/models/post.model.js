@@ -24,12 +24,10 @@ const postSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    likes: [
-      {
-        type: mongoose.Schema.Types.ObjectID,
-        ref: "User",
-      },
-    ],
+    likesCount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true, // to track createdAt and updatedAt

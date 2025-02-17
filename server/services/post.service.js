@@ -20,7 +20,9 @@ const fetchSamplePosts = async () => {
 
 /**
  * Create a new post
- * @param {Object} postData
+ * @param {string} post.title - The title of the post
+ * @param {string} post.body - The body of the post
+ * @param {string} post.userId - The ID of the user creating the post
  * @returns {Promise<Post>} A promise that resolves to a Post object
  */
 const createPost = async ({title, body, userId}) => {
