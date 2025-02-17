@@ -61,7 +61,10 @@ social-posts-manager/
 ```
 
 ### Backend
+TODO: Add some context
+You can red the full documentation of Backend [here](./server.md).
 
+TODO: Make them as table with header | npm package | version | short description |
 - **express:** framework for our app
 - **body-parser:** middleware to handle incoming requests as JSON
 - **jest:** testing framework for unit and integration tests
@@ -78,5 +81,6 @@ social-posts-manager/
 - **bcrypt:** to hash passwords
 - **jsonwebtoken:** to generate the JWT tokens
 - **cors:** to enable CORS in our app (Cross-Origin Resource Sharing) for security
+- **helmet:** to secure our app by setting various HTTP headers
 
 ### Frontend
