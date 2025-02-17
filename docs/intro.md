@@ -71,7 +71,7 @@ You can read the full documentation of Backend [here](./server.md).
 | cors          | ^2.8.5  | Middleware to enable Cross-Origin Resource Sharing. |
 | debug         | ~2.6.9  | Small debugging utility for Node.js applications.   |
 | dotenv        | ^16.4.7 | Loads environment variables from a `.env` file.     |
-| express       | ~4.16.1 | Fast, unopinionated, minimalist web framework.      |
+| express       | ~4.21.2 | Fast, unopinionated, minimalist web framework.      |
 | helmet        | ^8.0.0  | Helps secure Express apps by setting HTTP headers.  |
 | jest-mock     | ^29.7.0 | Mocking utilities for Jest testing framework.       |
 | jsonwebtoken  | ^9.0.2  | Library for creating and verifying JWTs.            |
