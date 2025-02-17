@@ -13,7 +13,7 @@ Your task is to build a full-stack web application that integrates user-created 
 - **Database:** MongoDB + Mongoose
 - **Authentication:** JWT (JSON Web Tokens)
 - **Styling:** Tailwind CSS
-- **State Management:** Redux
+- **State Management:** React Context 
 - **Formatting:** ESLint + Prettier
 - **Testing Tools:** Jest + Supertest
 - **e2e Test:** Cypress
@@ -26,7 +26,7 @@ You can read the README file [here](../README.md)
 
 The project will follow **Test-Driven Development (TDD)** principles to ensure robust and reliable code. This involves writing tests before implementing the actual functionality.
 
-The project will use a **monorepo structure** with a `client` folder for the frontend and a `server` folder for the backend.
+The project will use a **polyrepo structure** with a `client` folder for the frontend, a `server` folder for the backend and a `doc` folder for the documentation.
 
 The backend will follow the **MVC (Model-View-Controller) pattern** to ensure a clean separation of concerns.
 
@@ -48,7 +48,6 @@ Refer to the [requirements document](../docs/requirements.md) for detailed featu
 - Post Interaction
 - User Registration & Authentication
 - Data Persistence
-- Bonus Features (Optional)
 
 ### Project Structure
 
@@ -60,27 +59,32 @@ social-posts-manager/
 └── server/             # Express backend
 ```
 
-### Backend
-TODO: Add some context
-You can red the full documentation of Backend [here](./server.md).
+## Backend
 
-TODO: Make them as table with header | npm package | version | short description |
-- **express:** framework for our app
-- **body-parser:** middleware to handle incoming requests as JSON
-- **jest:** testing framework for unit and integration tests
-- **supertest:** library for testing HTTP endpoints
-- **nodemon:** to auto restart server automatically when files change
-- **dotenv:** to manage environment variables
-- **axios:** promise-based HTTP client for the browser and Node.js
-- **cookie-parser:** middleware to parse cookies
-- **debug:** debugging utility
-- **morgan:** HTTP request logger middleware for Node.js
-- **jest-mock:** to mock functions for testing
-- **mongoose:** MongoDB object modeling tool
-- **mongodb:** MongoDB driver for Node.js
-- **bcrypt:** to hash passwords
-- **jsonwebtoken:** to generate the JWT tokens
-- **cors:** to enable CORS in our app (Cross-Origin Resource Sharing) for security
-- **helmet:** to secure our app by setting various HTTP headers
+You can read the full documentation of Backend [here](./server.md).
 
-### Frontend
+| npm package   | Version | Short Description                                   |
+| ------------- | ------- | --------------------------------------------------- |
+| axios         | ^1.7.9  | Promise-based HTTP client for making API requests.  |
+| bcrypt        | ^5.1.1  | Library for hashing passwords securely.             |
+| cookie-parser | ~1.4.4  | Middleware for parsing cookies in Express.          |
+| cors          | ^2.8.5  | Middleware to enable Cross-Origin Resource Sharing. |
+| debug         | ~2.6.9  | Small debugging utility for Node.js applications.   |
+| dotenv        | ^16.4.7 | Loads environment variables from a `.env` file.     |
+| express       | ~4.16.1 | Fast, unopinionated, minimalist web framework.      |
+| helmet        | ^8.0.0  | Helps secure Express apps by setting HTTP headers.  |
+| jest-mock     | ^29.7.0 | Mocking utilities for Jest testing framework.       |
+| jsonwebtoken  | ^9.0.2  | Library for creating and verifying JWTs.            |
+| mongodb       | ^6.13.0 | Official MongoDB driver for Node.js.                |
+| mongoose      | ^8.10.1 | ODM for MongoDB and Node.js.                        |
+| morgan        | ~1.9.1  | HTTP request logger middleware for Express.         |
+| nodemon       | ^3.1.9  | Utility to monitor and restart Node.js apps.        |
+
+| npm package for Dev only | Version | Short Description                              |
+| ------------------------ | ------- | ---------------------------------------------- |
+| @shelf/jest-mongodb      | ^4.3.2  | Jest preset for testing MongoDB with Jest.     |
+| @types/express           | ^5.0.0  | TypeScript definitions for Express.            |
+| jest                     | ^29.7.0 | JavaScript testing framework by Facebook.      |
+| supertest                | ^7.0.0  | Library for testing HTTP servers with Node.js. |
+
+## Frontend
