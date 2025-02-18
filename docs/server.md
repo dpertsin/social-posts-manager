@@ -280,6 +280,33 @@ I chose to have a separate `Like` model to store likes instead of embedding them
 
 5. **Extensibility**: Having a separate `Like` model allows for easy extension of like-related functionality, such as tracking user-specific likes, timestamps, or additional metadata.
 
+## Code Improvement
+
+Now that I am thinking about it, I could use **Class-based** code for Controllers and Services. By using the **Class-based** pattern, we can have better maintainability for Service and Controllers logic. For example:
+
+```javascript
+const LikeService = require("../services/like.service");
+
+class LikeController {
+
+  async likeEntity(req, res) {
+    try {
+      await LikeService.likeEntity(req.params.id, req.body.entityType, req.user.id);
+      res.status(200).json({ message: "💖 Liked successfully" });
+    } catch (error) {
+      res.status(error.status || 500).json({ error: error.message });
+    }
+  }
+
+  // the others controllers
+
+}
+
+module.exports = new LikeController();
+```
+
+This way we can export only the instance of the class and have a better organization of the code.
+
 ## Areas for Improvements
 
 To further enhance the backend of the Social Posts Manager application, the following improvements can be made:
