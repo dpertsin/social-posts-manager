@@ -12,8 +12,8 @@ Your task is to build a full-stack web application that integrates user-created 
 - **Frontend:** React with Vite
 - **Database:** MongoDB + Mongoose
 - **Authentication:** JWT (JSON Web Tokens)
-- **Styling:** Tailwind CSS
-- **State Management:** React Context 
+- **Styling:** Material Ui
+- **State Management:** React Context / Redux
 - **Formatting:** ESLint + Prettier
 - **Testing Tools:** Jest + Supertest
 - **e2e Test:** Cypress
