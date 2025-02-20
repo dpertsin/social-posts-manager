@@ -116,7 +116,14 @@ The backend of the Social Posts Manager application is built using Express.js, a
     "_id": "post_id",
     "title": "Test Post",
     "body": "This is a test post",
-    "userId": "user_id",
+    "userId": {
+      "_id": "user_id",
+      "username": "user1",
+      "password": "$2b$10$m9M//MOfjvhdUp1zT9SBV.sWGgv7mhbaWht0GFQxIVIdZs6IeyeA.",
+      "createdAt": "timestamp",
+      "updatedAt": "timestamp",
+      "__v": 0
+    },
     "likesCount": 0,
     "createdAt": "timestamp",
     "updatedAt": "timestamp"
@@ -310,6 +317,8 @@ This way we can export only the instance of the class and have a better organiza
 ## Areas for Improvements
 
 To further enhance the backend of the Social Posts Manager application, the following improvements can be made:
+
+<!-- TODO: Add the load more option, we could make an endpoint to take let's say 50 posts and not all of them, then in the frontend we could load only the visible and when the user was scrolling then to load more or he could click the button to load more  -->
 
 1. **HTTPS**: Ensure that the application uses HTTPS to encrypt data transmitted between the client and server. This prevents attackers from intercepting sensitive information, such as tokens and passwords. There is a free SSL certificate from **Let's Encrypt** that can be used to enable HTTPS.
 
