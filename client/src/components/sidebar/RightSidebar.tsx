@@ -8,9 +8,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Search } from "@mui/icons-material";
+import { useAppSelector } from "../../store/hooks";
 
 function RightSidebar() {
-  const isAuthenticated = true; // TODO: Add the Global state here
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
 
   const handlePopulatePosts = () => {
@@ -25,12 +26,13 @@ function RightSidebar() {
 
   if (!isAuthenticated) {
     return (
-      <Box sx={{ position: "fixed", width: "100%", maxWidth: 280 }}>
+      <Box sx={{ width: "100%", maxWidth: 280 }}>
         <TextField
           label="Search"
           variant="outlined"
           fullWidth
           margin="normal"
+          size="small"
           slotProps={{
             input: {
               endAdornment: (
@@ -52,6 +54,7 @@ function RightSidebar() {
         variant="outlined"
         fullWidth
         margin="normal"
+        size="small"
         slotProps={{
           input: {
             endAdornment: (
@@ -70,6 +73,7 @@ function RightSidebar() {
       >
         Populate 100 Posts
       </Button>
+      {/* TODO: Add a Progress and a Text while loading https://mui.com/material-ui/react-progress/#linear-indeterminate */}
       <Box
         component="img"
         src={isLoading ? "/gifs/creating100posts.gif" : "/gifs/add100posts.gif"}

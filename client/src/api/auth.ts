@@ -5,7 +5,6 @@
  * The register function sends a POST request to /auth/register with the user's credentials.
  */
 import { api } from './axios';
-import { ApiResponse } from '../types/api';
 import { LoginCredentials, User } from '../types/user';
 
 interface AuthResponse {
@@ -16,8 +15,8 @@ interface AuthResponse {
 
 export const authApi = {
   login: (credentials: LoginCredentials) =>
-    api.post<ApiResponse<AuthResponse>>('/auth/login', credentials),
+    api.post<AuthResponse>('/auth/login', credentials),
   
   register: (credentials: LoginCredentials) =>
-    api.post<ApiResponse<AuthResponse>>('/auth/register', credentials),
+    api.post<AuthResponse>('/auth/register', credentials),
 };
