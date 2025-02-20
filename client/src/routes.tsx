@@ -12,11 +12,13 @@ function AppRoutes() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/liked-posts" element={<LikedPosts />} />
         <Route path="*" element={<NotFound />} />
         {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+      </Route>
+      <Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Route>
     </Routes>
   );

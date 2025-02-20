@@ -3,24 +3,20 @@
  * It contains the main layout structure with the sidebar and the main content area.
  */
 import { Box, Container, Grid2 } from "@mui/material";
-import React from "react";
 import RightSidebar from "../sidebar/RightSidebar";
 import Sidebar from "../sidebar/Sidebar";
 import { Outlet } from "react-router";
 
 function MainLayout() {
-  const isAuthenticated = true; // TODO: here we are going to use the Global state
-
   return (
     <Container maxWidth="lg">
       <Grid2 container spacing={2}>
-        <Grid2
-          size={{ xs: 0, sm: 3 }}
-          sx={{ display: { xs: "none", sm: "block" } }}
-        >
+        {/* Left Sidebar - Visible from sm (600px) and up */}
+        <Grid2 size={{ sm: 3 }} sx={{ display: { xs: "none", sm: "block" } }}>
           <Sidebar />
         </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6 }}>
+        {/* Main Content - Takes available space */}
+        <Grid2 size={{ xs: 12, sm: 9, lg: 6 }}>
           <Box
             sx={{
               minHeight: "100vh",
@@ -32,17 +28,27 @@ function MainLayout() {
             <Outlet />
           </Box>
         </Grid2>
-        {isAuthenticated && (
-          <Grid2
-            size={{ xs: 0, sm: 3 }}
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            <RightSidebar />
-          </Grid2>
-        )}
+        {/* Right Sidebar - Visible from lg (1200px) and up */}
+        <Grid2
+          size={{ lg: 3 }}
+          sx={{ display: { xs: "none", sm: "none", md: "none", lg: "block" } }}
+        >
+          <RightSidebar />
+        </Grid2>
       </Grid2>
     </Container>
   );
 }
+
+/*
+Το δεξι το θέλω μονο πάνω απο 900px md
+Το αρισττερο το θέλω πάνω απο 600px
+το μεσαιο θα παιρνει ολο τον διαθεσιμο χωρο
+xs, extra-small: 0px
+sm, small: 600px
+md, medium: 900px
+lg, large: 1200px
+xl, extra-large: 1536px
+*/
 
 export default MainLayout;

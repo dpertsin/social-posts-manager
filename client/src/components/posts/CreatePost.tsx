@@ -1,15 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React from "react";
+import { FormEvent, useState } from "react";
 import { CreatePostData } from "../../types/post";
 import { postsApi } from "../../api/posts";
-import { Box, Button, Paper, TextField } from "@mui/material";
+import { Avatar, Box, Button, TextField } from "@mui/material";
+import { useAppSelector } from "../../store/hooks";
 
 function CreatePost() {
   const queryClient = useQueryClient();
-  const [formData, setFormData] = React.useState<CreatePostData>({
+  const [formData, setFormData] = useState<CreatePostData>({
     title: "",
     body: "",
   });
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const createPostMutation = useMutation({
     mutationFn: (data: CreatePostData) => postsApi.createPost(data),
@@ -19,41 +21,62 @@ function CreatePost() {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     createPostMutation.mutate(formData);
   };
 
+  // Ensure to show the post button only when the inputs aren't empty and isn't sending a request.
+  const isButtonDisabled =
+    formData.title === "" ||
+    formData.body === "" ||
+    createPostMutation.isPending;
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
-    <Paper sx={{ p: 2, mb: 2 }}>
-      <Box component="form" onSubmit={handleSubmit}>
+    <Box
+      sx={{ padding: 2, borderBottom: 1, borderColor: "divider" }}
+      component="form"
+      onSubmit={handleSubmit}
+    >
+      <Box display="flex" alignItems="center" gap={2}>
+        <Avatar alt="User Avatar" />
         <TextField
           fullWidth
           label="Title"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           margin="normal"
+          placeholder="Type your title post..."
+          size="small"
+          sx={{ margin: "auto" }}
         />
-        <TextField
-          fullWidth
-          label="Body"
-          value={formData.body}
-          onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-          margin="normal"
-          multiline
-          rows={3}
-        />
+      </Box>
+      <TextField
+        fullWidth
+        label="What's happening?!"
+        value={formData.body}
+        onChange={(e) => setFormData({ ...formData, body: e.target.value })}
+        margin="normal"
+        multiline
+        rows={3}
+        placeholder="Type your body post..."
+        size="small"
+      />
+      <Box display="flex" justifyContent="flex-end">
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          fullWidth
-          disabled={createPostMutation.isPending}
+          disabled={isButtonDisabled}
         >
           Post
         </Button>
       </Box>
-    </Paper>
+    </Box>
   );
 }
 
