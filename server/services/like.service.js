@@ -51,7 +51,7 @@ const unlikeEntity = async (entityId, entityType, userId) => {
  * @returns {Promise<Post[]|Comment[]|...>} - A promise that resolves to an array of Post or Comment or ... objects
  */
 const getLikedEntities = async (userId, entityType) => {
-  const likes = await Like.find({ userId, entityType });
+  const likes = await Like.find({ userId, entityType }).sort({ createdAt: -1 });
   const entityIds = likes.map((like) => like.entityId);
   if (entityType === "Post") {
     return await Post.find({ _id: { $in: entityIds } }).populate(
