@@ -36,7 +36,7 @@ const createPost = async ({title, body, userId}) => {
  * @returns {Promise<Post[]>} A promise that resolves to an array of Post objects
  */
 const getPosts = async () => {
-  return await Post.find();
+  return await Post.find().populate("userId");
 };
 
 module.exports = {
