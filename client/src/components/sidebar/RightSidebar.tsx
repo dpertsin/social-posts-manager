@@ -42,6 +42,7 @@ function RightSidebar() {
           fullWidth
           margin="normal"
           size="small"
+          disabled={true}
           slotProps={{
             input: {
               endAdornment: (
@@ -64,6 +65,7 @@ function RightSidebar() {
         fullWidth
         margin="normal"
         size="small"
+        disabled={true}
         slotProps={{
           input: {
             endAdornment: (
