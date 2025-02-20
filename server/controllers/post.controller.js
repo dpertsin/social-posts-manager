@@ -19,7 +19,11 @@ const {
  */
 const populateSamplePosts = async (req, res) => {
   try {
-    await fetchSamplePosts();
+    const userId = req.user.id // the user ID is stored in req.user by the auth middleware
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    await fetchSamplePosts(userId);
     res.status(201).json({ message: "💯 Sample posts populated" });
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });

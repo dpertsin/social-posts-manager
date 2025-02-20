@@ -19,7 +19,7 @@ const router = express.Router();
 /* Default router: "/api/posts" */
 
 /* POST  to populate 100 sample posts */
-router.post("/populate", populateSamplePosts);
+router.post("/populate", authMiddleware, populateSamplePosts);
 /* POST to add a new post */
 router.post("/", authMiddleware, addPost);
 /* GET to get all the posts */

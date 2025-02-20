@@ -6,27 +6,36 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { Search } from "@mui/icons-material";
 import { useAppSelector } from "../../store/hooks";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postsApi } from "../../api/posts";
 
 function RightSidebar() {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
-  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+
+  // Create mutation for populating posts
+  const populatePostsMutation = useMutation({
+    mutationFn: () => postsApi.populatePosts(),
+    onSuccess: () => {
+      // Invalidate and refetch posts after successful population
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      alert("🎉 Posts populated successfully");
+    },
+    onError: (error) => {
+      console.error("Failed to populate posts:", error);
+      alert("Error populating posts");
+    },
+  });
 
   const handlePopulatePosts = () => {
-    setIsLoading(true);
-    // TODO: Add the logic to populate 100 posts
-
-    setTimeout(() => {
-      alert("100 Posts have been populated");
-      setIsLoading(false);
-    }, 2000);
+    populatePostsMutation.mutate();
   };
 
   if (!isAuthenticated) {
     return (
-      <Box sx={{ width: "100%", maxWidth: 280 }}>
+      <Box sx={{ position: "fixed", width: "100%", maxWidth: 280 }}>
         <TextField
           label="Search"
           variant="outlined"
@@ -69,14 +78,20 @@ function RightSidebar() {
         variant="contained"
         color="primary"
         onClick={handlePopulatePosts}
+        disabled={populatePostsMutation.isPending}
         sx={{ width: "100%", mt: 2 }}
       >
-        Populate 100 Posts
+        {populatePostsMutation.isPending
+          ? "Populating..."
+          : "Populate 100 Posts"}
       </Button>
-      {/* TODO: Add a Progress and a Text while loading https://mui.com/material-ui/react-progress/#linear-indeterminate */}
       <Box
         component="img"
-        src={isLoading ? "/gifs/creating100posts.gif" : "/gifs/add100posts.gif"}
+        src={
+          populatePostsMutation.isPending
+            ? "/gifs/creating100posts.gif"
+            : "/gifs/add100posts.gif"
+        }
         alt="Saitama watching the power of the button"
         sx={{ width: "100%", mt: 2 }}
       />
