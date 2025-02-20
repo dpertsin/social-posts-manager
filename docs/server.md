@@ -195,7 +195,10 @@ The backend of the Social Posts Manager application is built using Express.js, a
       "_id": "post_id",
       "title": "Test Post",
       "body": "This is a test post",
-      "userId": "user_id",
+      "userId": {
+        "_id": "user_id",
+        "username": "user1",
+      },
       "likesCount": 1,
       "createdAt": "timestamp",
       "updatedAt": "timestamp"
