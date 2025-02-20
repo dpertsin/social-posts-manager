@@ -26,4 +26,11 @@ export const postsApi = {
 
   getLikedPosts: () =>
     api.get<Post[]>("/likes", { params: { entityType: "Post" } }),
+
+  clearAllLikesOnLikedPosts: () =>
+    api.delete<ApiResponse<void>>(`/likes`, {
+      data: { entityType: "Post" },
+    }),
+
+  populatePosts: () => api.post<ApiResponse<void>>("/posts/populate"),
 };

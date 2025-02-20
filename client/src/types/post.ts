@@ -9,7 +9,6 @@ export interface Post {
   likesCount: number;
   createdAt: string;
   updatedAt: string;
-  isLiked?: boolean;
 }
 
 export interface CreatePostData {

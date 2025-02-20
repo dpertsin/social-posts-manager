@@ -34,9 +34,10 @@ export default function Sidebar() {
     return (
       <Box
         sx={{
-          width: "100%",
-          maxWidth: 280,
-          bgcolor: "background.paper",
+          position: "fixed",
+          height: "100%",
+          width: "inherit",
+          maxWidth: "280px",
         }}
       >
         <Box sx={{ width: 46, height: 46, cursor: "pointer" }}>
@@ -69,11 +70,11 @@ export default function Sidebar() {
   return (
     <Box
       sx={{
-        width: "100%",
-        maxWidth: 280,
-        bgcolor: "background.paper",
+        position: "fixed",
         height: "100%",
         display: "flex",
+        width: "inherit",
+        maxWidth: "280px",
         flexDirection: "column",
         justifyContent: "space-between",
       }}

@@ -1,51 +1,13 @@
-import React, { useState } from "react";
-import { postsApi } from "../../../api/posts";
-import { Box, IconButton, Typography } from "@mui/material";
-import {
-  ChatBubbleOutline,
-  Favorite,
-  FavoriteBorder,
-  Repeat,
-  Share,
-} from "@mui/icons-material";
-import { useQueryClient } from "@tanstack/react-query";
+import { Box, Typography } from "@mui/material";
 import { Post } from "../../../types/post";
-import { useAppSelector } from "../../../store/hooks";
 import { formatDistanceToNow } from "date-fns";
-import LoginModal from "../../common/LoginModal";
+import FooterPost from "./footer";
 
 interface PostCardProps {
   post: Post;
 }
 
 function PostCard({ post }: PostCardProps) {
-  const queryClient = useQueryClient();
-
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-
-  const handleLike = async () => {
-    if (!isAuthenticated) {
-      setShowLoginModal(true);
-      return;
-    }
-
-    try {
-      if (post.isLiked) {
-        await postsApi.unlikePost(post._id);
-      } else {
-        await postsApi.likePost(post._id);
-      }
-      // Invalidate and refetch posts
-      await queryClient.invalidateQueries({
-        queryKey: ["posts"],
-        refetchType: "active",
-      });
-    } catch (error) {
-      console.error("Error toggling like:", error);
-    }
-  };
-
   const timeAgo = (timestamp: string) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
@@ -83,40 +45,8 @@ function PostCard({ post }: PostCardProps) {
           </Typography>
         </Box>
         {/* Footer */}
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ mt: 1, px: 1 }}
-        >
-          <Box display="flex" alignItems="center">
-            <IconButton onClick={handleLike}>
-              {post.isLiked ? (
-                <Favorite color="error" fontSize="small" />
-              ) : (
-                <FavoriteBorder fontSize="small" />
-              )}
-            </IconButton>
-            <Typography variant="body2" color="text.secondary">
-              {post.likesCount}
-            </Typography>
-          </Box>
-          <IconButton>
-            <ChatBubbleOutline fontSize="small" />
-          </IconButton>
-          <IconButton>
-            <Repeat fontSize="small" />
-          </IconButton>
-          <IconButton>
-            <Share fontSize="small" />
-          </IconButton>
-        </Box>
+        <FooterPost post={post} />
       </Box>
-
-      <LoginModal
-        open={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-      />
     </>
   );
 }
