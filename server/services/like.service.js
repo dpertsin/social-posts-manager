@@ -54,7 +54,10 @@ const getLikedEntities = async (userId, entityType) => {
   const likes = await Like.find({ userId, entityType });
   const entityIds = likes.map((like) => like.entityId);
   if (entityType === "Post") {
-    return await Post.find({ _id: { $in: entityIds } });
+    return await Post.find({ _id: { $in: entityIds } }).populate(
+      "userId",
+      "username"
+    );
   }
   // Add similar logic for other entity types if needed
 };
