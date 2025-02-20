@@ -1,82 +1,103 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
 import { CreatePostData } from "../../types/post";
 import { postsApi } from "../../api/posts";
-import { Avatar, Box, Button, TextField } from "@mui/material";
+import { Avatar, Box, Button, TextField, LinearProgress } from "@mui/material";
 import { useAppSelector } from "../../store/hooks";
+import { useState } from "react";
 
 function CreatePost() {
   const queryClient = useQueryClient();
-  const [formData, setFormData] = useState<CreatePostData>({
-    title: "",
-    body: "",
-  });
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const [progress, setProgress] = useState(0);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+    reset,
+  } = useForm<CreatePostData>({ mode: "onChange" });
 
   const createPostMutation = useMutation({
-    mutationFn: (data: CreatePostData) => postsApi.createPost(data),
+    mutationFn: async (data: CreatePostData) => {
+      setProgress(60);
+      await postsApi.createPost(data);
+      setProgress(100);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      setFormData({ title: "", body: "" });
+      reset();
+      setProgress(0);
+    },
+    onError: () => {
+      setProgress(0);
     },
   });
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    createPostMutation.mutate(formData);
+  const onSubmit = (data: CreatePostData) => {
+    setProgress(20);
+    createPostMutation.mutate(data);
   };
-
-  // Ensure to show the post button only when the inputs aren't empty and isn't sending a request.
-  const isButtonDisabled =
-    formData.title === "" ||
-    formData.body === "" ||
-    createPostMutation.isPending;
 
   if (!isAuthenticated) {
     return null;
   }
 
   return (
-    <Box
-      sx={{ padding: 2, borderBottom: 1, borderColor: "divider" }}
-      component="form"
-      onSubmit={handleSubmit}
-    >
-      <Box display="flex" alignItems="center" gap={2}>
-        <Avatar alt="User Avatar" />
+    <>
+      {progress > 0 && progress < 100 && (
+        <Box sx={{ padding: 2 }}>
+          <LinearProgress
+            variant="determinate"
+            value={progress}
+            sx={{ borderRadius: 5 }}
+          />
+        </Box>
+      )}
+      <Box
+        sx={{ padding: 2, borderBottom: 1, borderColor: "divider" }}
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <Box display="flex" alignItems="center" gap={2}>
+          <Avatar alt="User Avatar" />
+          <TextField
+            fullWidth
+            label="Title"
+            {...register("title", { required: "Title is required" })}
+            margin="normal"
+            placeholder="Type your title post..."
+            size="small"
+            sx={{ margin: "auto" }}
+            error={!!errors.title}
+            helperText={errors.title?.message}
+          />
+        </Box>
         <TextField
           fullWidth
-          label="Title"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          label="What's happening?!"
+          {...register("body", { required: "Body is required" })}
           margin="normal"
-          placeholder="Type your title post..."
+          multiline
+          rows={3}
+          placeholder="Type your body post..."
           size="small"
-          sx={{ margin: "auto" }}
+          error={!!errors.body}
+          helperText={errors.body?.message}
         />
+
+        <Box display="flex" justifyContent="flex-end" marginTop={1}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={!isValid || isSubmitting || createPostMutation.isPending}
+          >
+            Post
+          </Button>
+        </Box>
       </Box>
-      <TextField
-        fullWidth
-        label="What's happening?!"
-        value={formData.body}
-        onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-        margin="normal"
-        multiline
-        rows={3}
-        placeholder="Type your body post..."
-        size="small"
-      />
-      <Box display="flex" justifyContent="flex-end">
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          disabled={isButtonDisabled}
-        >
-          Post
-        </Button>
-      </Box>
-    </Box>
+    </>
   );
 }
 
