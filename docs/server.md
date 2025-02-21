@@ -1,8 +1,11 @@
 # Backend Documentation
 
+I followed the TDD (Test-Driven Development) approach to build the backend of the Social Posts Manager application. The backend is built using Node.js with Express.js and MongoDB as the database. The following documentation provides an overview of the design decisions, API endpoints, authentication practices, and areas for improvements.
+
 ## Table of Contents
 
 - [Overview of Design Decisions](#overview-of-design-decisions)
+- [Structure of the Backend](#structure-of-the-backend)
 - [API Documentation](#api-documentation)
   - [User Registration & Authentication](#user-registration--authentication)
     - [Register a New User](#register-a-new-user)
@@ -18,6 +21,7 @@
     - [Clear All Liked Posts](#clear-all-liked-posts)
 - [Authentication Practices](#authentication-practices)
 - [Why did I choose to have the likes in new model and not inside the Post model?](#why-did-i-choose-to-have-the-likes-in-new-model-and-not-inside-the-post-model)
+- [Code Improvement](#code-improvement)
 - [Areas for Improvements](#areas-for-improvements)
 
 ## Overview of Design Decisions
@@ -33,6 +37,25 @@ The backend of the Social Posts Manager application is built using Express.js, a
 4. **Middleware**: Middleware functions are used to handle common tasks such as logging, parsing JSON bodies, handling CORS, and verifying authentication tokens.
 
 5. **Environment Variables**: Sensitive information such as database connection strings and JWT secret keys are stored in environment variables to enhance security.
+
+6. **Error Handling**: Custom error handling middleware is implemented to catch and handle errors in a consistent manner. Errors are returned as JSON responses with appropriate status codes.
+
+7. **Load More Option**: Implemented a "load more" feature to improve performance and user experience. Instead of retrieving all posts at once, an endpoint is created to fetch posts in batches (e.g., 30 posts at a time). This allows the frontend to load only the visible posts initially and load more posts as the user scrolls or clicks a "load more" button.
+
+
+## Structure of the Backend
+
+The backend is organized into the following main directories:
+
+- **__tests__**: Contains test files for unit and integration testing.
+- **bin**: Contains the server startup script.
+- **controllers**: Contains the controller files for handling HTTP requests and responses.
+- **middlewares**: Contains middleware functions for request processing.
+- **models**: Contains the Mongoose models for the application's data structures.
+- **routes**: Contains the route definitions for the application's endpoints.
+- **services**: Contains the service files for business logic and data manipulation.
+- **app.js**: The entry point of the application, where the server is started.
+- **database.js**: Config file for connecting to MongoDB.
 
 ## API Documentation
 
@@ -91,7 +114,7 @@ The backend of the Social Posts Manager application is built using Express.js, a
 #### Populate Sample Posts
 
 - **Endpoint**: `POST /api/posts/populate`
-- **Description**: Populates the database with 100 sample posts.
+- **Description**: Populates the database with 100 sample posts. (Requires to be authenticated)
 - **Response**:
   ```json
   {
@@ -316,8 +339,6 @@ This way we can export only the instance of the class and have a better organiza
 ## Areas for Improvements
 
 To further enhance the backend of the Social Posts Manager application, the following improvements can be made:
-
-<!-- TODO: Add the load more option, we could make an endpoint to take let's say 50 posts and not all of them, then in the frontend we could load only the visible and when the user was scrolling then to load more or he could click the button to load more  -->
 
 1. **HTTPS**: Ensure that the application uses HTTPS to encrypt data transmitted between the client and server. This prevents attackers from intercepting sensitive information, such as tokens and passwords. There is a free SSL certificate from **Let's Encrypt** that can be used to enable HTTPS.
 

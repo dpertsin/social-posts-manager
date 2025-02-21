@@ -13,7 +13,7 @@ Your task is to build a full-stack web application that integrates user-created 
 - **Database:** MongoDB + Mongoose
 - **Authentication:** JWT (JSON Web Tokens)
 - **Styling:** Material Ui
-- **State Management:** React Context / Redux
+- **State Management:** Redux
 - **Formatting:** ESLint + Prettier
 - **Testing Tools:** Jest + Supertest
 - **e2e Test:** Cypress
@@ -49,16 +49,6 @@ Refer to the [requirements document](../docs/requirements.md) for detailed featu
 - User Registration & Authentication
 - Data Persistence
 
-### Project Structure
-
-TODO: Add the project structure
-
-```json
-social-posts-manager/
-├── client/                 # React frontend
-└── server/             # Express backend
-```
-
 ## Backend
 
 You can read the full documentation of Backend [here](./server.md).
@@ -88,3 +78,35 @@ You can read the full documentation of Backend [here](./server.md).
 | supertest                | ^7.0.0  | Library for testing HTTP servers with Node.js. |
 
 ## Frontend
+
+You can read the full documentation of Frontend [here](./client.md).
+
+| npm package              | Version | Short Description                                      |
+| ------------------------ | ------- | ------------------------------------------------------ |
+| @emotion/react           | ^11.14.0| Library for writing css styles with JavaScript.        |
+| @emotion/styled          | ^11.14.0| Styled component library for Emotion.                  |
+| @mui/icons-material      | ^6.4.4  | Material Design icons for React.                       |
+| @mui/material            | ^6.4.4  | React components that implement Google's Material Design.|
+| @reduxjs/toolkit         | ^2.5.1  | Official, opinionated, batteries-included toolset for Redux.|
+| @tanstack/react-query    | ^5.66.7 | Hooks for fetching, caching, and updating asynchronous data in React.|
+| axios                    | ^1.7.9  | Promise-based HTTP client for making API requests.     |
+| date-fns                 | ^4.1.0  | Modern JavaScript date utility library.                |
+| react                    | ^19.0.0 | JavaScript library for building user interfaces.       |
+| react-dom                | ^19.0.0 | Entry point of the DOM-related rendering paths.        |
+| react-hook-form          | ^7.54.2 | Performant, flexible and extensible forms with easy-to-use validation.|
+| react-redux              | ^9.2.0  | Official React bindings for Redux.                     |
+| react-router             | ^7.1.5  | Declarative routing for React.                         |
+
+| npm package for Dev only | Version | Short Description                                      |
+| ------------------------ | ------- | ------------------------------------------------------ |
+| @eslint/js               | ^9.19.0 | ESLint's JavaScript API.                               |
+| @types/react             | ^19.0.8 | TypeScript definitions for React.                      |
+| @types/react-dom         | ^19.0.3 | TypeScript definitions for React DOM.                  |
+| @vitejs/plugin-react-swc | ^3.5.0  | Vite plugin to support React with SWC.                 |
+| eslint                   | ^9.19.0 | Pluggable JavaScript linter.                           |
+| eslint-plugin-react-hooks| ^5.0.0  | ESLint rules for React Hooks.                          |
+| eslint-plugin-react-refresh| ^0.4.18| ESLint plugin for React Refresh.                       |
+| globals                  | ^15.14.0| Global variables for various environments.             |
+| typescript               | ~5.7.2  | Typed JavaScript at Any Scale.                         |
+| typescript-eslint        | ^8.22.0 | Monorepo for all the tooling which enables ESLint to support TypeScript.|
+| vite                     | ^6.1.0  | Next generation frontend tooling.                      |
