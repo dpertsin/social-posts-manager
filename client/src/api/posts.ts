@@ -12,7 +12,11 @@ import { Post, CreatePostData } from "../types/post";
 import { ApiResponse } from "../types/api";
 
 export const postsApi = {
-  getAllPosts: () => api.get<Post[]>("/posts"),
+  getAllPosts: (limit: number = 30) =>
+    api.get<{
+      posts: Post[];
+      metadata: { hasMore: boolean; total: number; limit: number };
+    }>(`/posts?limit=${limit}`),
 
   createPost: (data: CreatePostData) => api.post<Post>("/posts", data),
 

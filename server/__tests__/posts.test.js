@@ -22,27 +22,12 @@ describe("Post API", () => {
     postService.getPosts.mockClear();
   });
 
-  it("POST /api/posts/populate --> should populate 100 sample posts by fetching data from JSONPlaceholder", () => {
+  it("POST /api/posts/populate --> should not populate 100 sample posts because of Auth required", () => {
     postService.fetchSamplePosts.mockResolvedValue(); // Useful to mock async functions in async tests
     return request(app)
       .post("/api/posts/populate")
       .expect("Content-Type", /json/)
-      .expect(201)
-      .then((response) => {
-        // expect(response.body.length).toBe(100);
-        // response.body.forEach((post) => {
-        //   expect(post).toEqual(
-        //     expect.objectContaining({
-        //       id: expect.any(Number),
-        //       title: expect.any(String),
-        //       body: expect.any(String),
-        //       userId: expect.any(Number),
-        //     })
-        //   );
-        // });
-        expect(postService.fetchSamplePosts).toHaveBeenCalledTimes(1);
-        expect(response.body.message).toBe("💯 Sample posts populated");
-      });
+      .expect(401);
   });
 
   it("POST /api/posts --> should not create a new post because the user isn't authenticated", () => {
@@ -56,21 +41,29 @@ describe("Post API", () => {
       .expect(401);
   });
 
-  it("GET /api/posts --> should return all posts", () => {
-    const samplePosts = [
-      {
-        _id: "67b0e075043cf084ab2471ca",
-        title: "Test Post 1",
-        body: "This is a test post 1",
-        __v: 0,
+  it("GET /api/posts --> should return all posts with metadata", () => {
+    const samplePosts = {
+      posts: [
+        {
+          _id: "67b0e075043cf084ab2471ca",
+          title: "Test Post 1",
+          body: "This is a test post 1",
+          userId: { _id: "67b0e075043cf084ab2471ca", username: "testuser" },
+          __v: 0,
+        },
+        {
+          _id: "67b0e075043cf084ab2471cb",
+          title: "Test Post 2",
+          body: "This is a test post 2",
+          userId: { _id: "67b0e075043cf084ab2471ca", username: "testuser" },
+          __v: 0,
+        },
+      ],
+      metadata: {
+        limit: 30,
       },
-      {
-        _id: "67b0e075043cf084ab2471cb",
-        title: "Test Post 2",
-        body: "This is a test post 2",
-        __v: 0,
-      },
-    ];
+    };
+
     postService.getPosts.mockResolvedValue(samplePosts);
 
     return request(app)
@@ -78,16 +71,26 @@ describe("Post API", () => {
       .expect("Content-Type", /json/)
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual(
-          expect.arrayContaining([
+        expect(response.body).toEqual({
+          posts: expect.arrayContaining([
             expect.objectContaining({
               _id: expect.any(String),
               title: expect.any(String),
               body: expect.any(String),
+              userId: expect.objectContaining({
+                _id: expect.any(String),
+                username: expect.any(String),
+              }),
               __v: expect.any(Number),
             }),
-          ])
-        );
+          ]),
+          metadata: {
+            limit: expect.any(Number),
+          },
+        });
+        // Additional checks
+        expect(postService.getPosts).toHaveBeenCalledWith(30);
+        expect(response.body.posts).toHaveLength(2);
       });
   });
 });

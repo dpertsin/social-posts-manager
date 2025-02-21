@@ -19,7 +19,7 @@ const {
  */
 const populateSamplePosts = async (req, res) => {
   try {
-    const userId = req.user.id // the user ID is stored in req.user by the auth middleware
+    const userId = req.user.id; // the user ID is stored in req.user by the auth middleware
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
     }
@@ -32,6 +32,11 @@ const populateSamplePosts = async (req, res) => {
 
 /**
  * Add a post to the database
+ * @description This function creates a new post in the database
+ * @example /api/posts
+ * @param {string} req.body.title - The title of the post
+ * @param {string} req.body.body - The body of the post
+ * @param {string} req.user.id - The ID of the user creating the post
  * @param {Object} req - Request object
  * @param {Object} res - Response object
  * @returns {Object} - Response object
@@ -51,15 +56,27 @@ const addPost = async (req, res) => {
 };
 
 /**
- * List all posts from the database
+ * List posts with limit
  * @param {Object} req - Request object
+ * @param {number} req.query.limit - Number of posts to return (default: 30)
  * @param {Object} res - Response object
- * @returns {Object} - Response object
+ * @returns {Object} Response containing posts and metadata
  */
 const listPosts = async (req, res) => {
   try {
-    const posts = await getPosts();
-    res.status(200).json(posts);
+    const limit = parseInt(req.query.limit) || 30;
+
+    // Get posts with limit and metadata
+    const { posts, hasMore, total } = await getPosts(limit);
+
+    res.status(200).json({
+      posts,
+      metadata: {
+        hasMore,
+        total,
+        limit,
+      },
+    });
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
   }
