@@ -72,8 +72,8 @@ Create a `.env` file in the `server` directory and add the following environment
 
 ```bash
 PORT=3000
-MONGO_URI={your_mongo_uri} // mongodb connection string
-JWT_SECRET={your_jwt_secret} // can be any string, we are using this for jwt token generation
+MONGO_URI=your_mongo_uri // mongodb connection string
+JWT_SECRET=your_jwt_secret // can be any string, we are using this for jwt token generation
 ```
 
 Create a `.env` file in the `client` directory and add the following environment variables:
