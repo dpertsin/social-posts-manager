@@ -15,6 +15,7 @@ function PostCard({ post }: PostCardProps) {
   return (
     <>
       <Box
+        data-testid="post-card"
         sx={{
           border: "1px solid #ddd",
           borderRadius: 2,

@@ -9,6 +9,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
+const Like = require("../models/like.model");
+const Post = require("../models/post.model");
 
 /**
  * Register a new user
@@ -54,9 +56,29 @@ const loginUser = async (userData) => {
 };
 
 /**
+ * Delete a test user and all their posts (for testing purposes only)
+ * @param {string} username - Username to delete
+ * @returns {Promise<void>}
+ */
+const removeTestUser = async (username) => {
+  const user = await User.findOne({ username });
+  if (!user) {
+    throw { status: 404, message: "User not found" };
+  }
+
+  // Delete all posts by this user
+  await Post.deleteMany({ userId: user._id });
+  // Delete the user
+  await User.deleteOne({ _id: user._id });
+  // Delete all likes by this user
+  await Like.deleteMany({ userId: user._id });
+};
+
+/**
  * Export services to be used in controllers
  */
 module.exports = {
   registerUser,
   loginUser,
+  removeTestUser,
 };

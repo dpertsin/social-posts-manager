@@ -4,7 +4,11 @@
  * @exports register
  * @exports login
  */
-const { registerUser, loginUser } = require("../services/auth.service");
+const {
+  registerUser,
+  loginUser,
+  removeTestUser,
+} = require("../services/auth.service");
 
 /**
  * Register a new user
@@ -53,9 +57,32 @@ const login = async (req, res) => {
 };
 
 /**
+ * Delete test user and all associated data
+ * @param {Object} req - Request object
+ * @param {Object} res - Response object
+ * @returns {Object} - Response object
+ */
+const cleanupTestUser = async (req, res) => {
+  try {
+    const { username } = req.body;
+    if (!username) {
+      return res.status(400).json({ error: "Username is required" });
+    }
+
+    await removeTestUser(username);
+    res.status(200).json({
+      message: `Test user ${username} and all associated data deleted`,
+    });
+  } catch (error) {
+    res.status(error.status || 500).json({ error: error.message });
+  }
+};
+
+/**
  * Export controllers to be used in routes
  */
 module.exports = {
   register,
   login,
+  cleanupTestUser,
 };

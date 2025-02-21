@@ -5,7 +5,7 @@
  * @exports router
  */
 const express = require("express");
-const { register, login } = require("../controllers/auth.controller");
+const { register, login, cleanupTestUser } = require("../controllers/auth.controller");
 
 const router = express.Router();
 
@@ -13,5 +13,7 @@ const router = express.Router();
 router.post("/register", register);
 /* POST to login a user */
 router.post("/login", login);
+/* Test cleanup route - only for testing purposes */
+router.delete("/cleanup", cleanupTestUser);
 
 module.exports = router;

@@ -58,6 +58,7 @@ function Register() {
             margin="normal"
             error={!!errors.username}
             helperText={errors.username?.message}
+            name="username"
           />
           <TextField
             fullWidth
@@ -74,6 +75,7 @@ function Register() {
             error={!!errors.password}
             helperText={errors.password?.message}
             autoComplete="current-password"
+            name="password"
           />
           {errors.root && (
             <Typography color="error" sx={{ mt: 2 }}>

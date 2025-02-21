@@ -126,7 +126,7 @@ You can test the application by running the following command:
 
 ```bash
 cd client
-npm run cypress:open
+npm run cy:open
 ```
 
 ### Server 

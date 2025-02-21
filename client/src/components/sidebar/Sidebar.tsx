@@ -24,10 +24,30 @@ export default function Sidebar() {
   const dispatch = useAppDispatch();
 
   const authenticatedMenuItems = [
-    { text: "Home", icon: <HomeIcon />, path: "/" },
-    { text: "Search", icon: <SearchIcon />, path: "/search" },
-    { text: "Liked Posts", icon: <FavoriteIcon />, path: "/liked-posts" },
-    { text: "404 page", icon: <DynamicFormIcon />, path: "/404" },
+    {
+      text: "Home",
+      icon: <HomeIcon />,
+      path: "/",
+      dataTestid: "home-page-link",
+    },
+    {
+      text: "Search",
+      icon: <SearchIcon />,
+      path: "/search",
+      dataTestid: "search-page-link",
+    },
+    {
+      text: "Liked Posts",
+      icon: <FavoriteIcon />,
+      path: "/liked-posts",
+      dataTestid: "liked-page-link",
+    },
+    {
+      text: "404 page",
+      icon: <DynamicFormIcon />,
+      path: "/404",
+      dataTestid: "404-page-link",
+    },
   ];
 
   if (!isAuthenticated) {
@@ -56,6 +76,7 @@ export default function Sidebar() {
           Login
         </Button>
         <Button
+          data-testid="register-link"
           fullWidth
           variant="outlined"
           color="primary"
@@ -89,7 +110,10 @@ export default function Sidebar() {
           <List>
             {authenticatedMenuItems.map((item) => (
               <ListItem disablePadding key={item.text}>
-                <ListItemButton onClick={() => navigate(item.path)}>
+                <ListItemButton
+                  data-testid={item?.dataTestid}
+                  onClick={() => navigate(item.path)}
+                >
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} />
                 </ListItemButton>

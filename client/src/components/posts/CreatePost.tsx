@@ -71,6 +71,7 @@ function CreatePost() {
             sx={{ margin: "auto" }}
             error={!!errors.title}
             helperText={errors.title?.message}
+            name="title"
           />
         </Box>
         <TextField
@@ -84,6 +85,7 @@ function CreatePost() {
           size="small"
           error={!!errors.body}
           helperText={errors.body?.message}
+          name="body"
         />
 
         <Box display="flex" justifyContent="flex-end" marginTop={1}>
