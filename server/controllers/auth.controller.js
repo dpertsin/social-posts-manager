@@ -1,24 +1,14 @@
 /**
  * Auth controller
- * @requires services/auth.service
- * @exports register
- * @exports login
  */
-const {
-  registerUser,
-  loginUser,
-  removeTestUser,
-} = require("../services/auth.service");
+const authService = require("../services/auth.service");
 
 /**
  * Register a new user
- * @param {Object} req - Request object
- * @param {Object} res - Response object
- * @returns {Object} - Response object
  */
 const register = async (req, res) => {
   try {
-    const { user, token } = await registerUser(req.body);
+    const { user, token } = await authService.registerUser(req.body);
     res.status(201).json({
       message: "🙋🏻‍♂️ User registered successfully",
       user: {
@@ -36,13 +26,10 @@ const register = async (req, res) => {
 
 /**
  * Login a user
- * @param {Object} req - Request object
- * @param {Object} res - Response object
- * @returns {Object} - Response object
  */
 const login = async (req, res) => {
   try {
-    const { user, token } = await loginUser(req.body);
+    const { user, token } = await authService.loginUser(req.body);
     res.status(200).json({
       message: "🔓 User logged in successfully",
       user: {
@@ -58,9 +45,6 @@ const login = async (req, res) => {
 
 /**
  * Delete test user and all associated data
- * @param {Object} req - Request object
- * @param {Object} res - Response object
- * @returns {Object} - Response object
  */
 const cleanupTestUser = async (req, res) => {
   try {
@@ -69,7 +53,7 @@ const cleanupTestUser = async (req, res) => {
       return res.status(400).json({ error: "Username is required" });
     }
 
-    await removeTestUser(username);
+    await authService.removeTestUser(username);
     res.status(200).json({
       message: `Test user ${username} and all associated data deleted`,
     });
@@ -78,9 +62,6 @@ const cleanupTestUser = async (req, res) => {
   }
 };
 
-/**
- * Export controllers to be used in routes
- */
 module.exports = {
   register,
   login,

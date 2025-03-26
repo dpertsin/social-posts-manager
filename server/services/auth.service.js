@@ -1,82 +1,95 @@
 /**
- * Auth service
- * @requires jsonwebtoken
- * @requires bcrypt
- * @requires models/user.model
- * @exports registerUser
- * @exports loginUser
+ * Auth service - contains business logic for authentication
  */
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const User = require("../models/user.model");
-const Like = require("../models/like.model");
-const Post = require("../models/post.model");
+const authRepository = require("../repositories/auth.repository");
+const User = require("../models/user.model"); 
 
 /**
  * Register a new user
- * @param {Object} userData - User data
- * @returns {Object} - Registered user
  */
 const registerUser = async (userData) => {
   const { username, password } = userData;
-  const existingUser = await User.findOne({ username });
+
+  // Check if username exists
+  const existingUser = await authRepository.findByUsername(username);
   if (existingUser) {
-    throw new Error("🤔 Username already exists");
+    const error = new Error("🤔 Username already exists");
+    error.status = 400;
+    throw error;
   }
+
+  // Validate password
   if (password.length < 6) {
-    throw new Error("🔐 Password should be at least 6 characters long");
+    const error = new Error("🔐 Password should be at least 6 characters long");
+    error.status = 400;
+    throw error;
   }
-  const user = new User(userData);
-  await user.save();
+
+  // Create user through repository
+  const user = await authRepository.createUser(userData);
+
+  // Generate JWT token
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "48h",
   });
+
   return { user, token };
 };
 
 /**
  * Login a user
- * @param {Object} userData - User data
- * @returns {String} - JWT token
  */
 const loginUser = async (userData) => {
   const { username, password } = userData;
-  const user = await User.findOne({ username });
+
+  // Validate input
+  if (!username || !password) {
+    const error = new Error("🙅 Username and password are required");
+    error.status = 400;
+    throw error;
+  }
+
+  // Get user through repository
+  const user = await authRepository.findByUsername(username);
   if (!user) {
-    throw new Error("🙅 Invalid username or password");
+    const error = new Error("❓ Username doesn't exist");
+    error.status = 400;
+    throw error;
   }
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    throw new Error("🙅 Invalid username or password");
+
+  // Compare password
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    const error = new Error("❌ Invalid password");
+    error.status = 400;
+    throw error;
   }
+
+  // Generate JWT token
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "48h",
   });
+
   return { user, token };
 };
 
 /**
- * Delete a test user and all their posts (for testing purposes only)
- * @param {string} username - Username to delete
- * @returns {Promise<void>}
+ * Remove test user and all associated data
  */
 const removeTestUser = async (username) => {
-  const user = await User.findOne({ username });
-  if (!user) {
-    throw { status: 404, message: "User not found" };
+  const result = await authRepository.removeTestUserAndData(username);
+
+  if (!result) {
+    const error = new Error("❓ Username doesn't exist");
+    error.status = 400;
+    throw error;
   }
 
-  // Delete all posts by this user
-  await Post.deleteMany({ userId: user._id });
-  // Delete the user
-  await User.deleteOne({ _id: user._id });
-  // Delete all likes by this user
-  await Like.deleteMany({ userId: user._id });
+  return result;
 };
 
-/**
- * Export services to be used in controllers
- */
 module.exports = {
   registerUser,
   loginUser,
