@@ -1,86 +1,77 @@
 /**
- * Like service to perform CRUD operations on Like collection in MongoDB
- * @requires Like
- * @requires Post
- * @exports likeEntity
- * @exports unlikeEntity
- * @exports getLikedEntities
- * @exports clearLikedEntities
+ * Like service - contains business logic for like-related operations
  */
-const Like = require("../models/like.model");
-const Post = require("../models/post.model");
+const likeRepository = require("../repositories/like.repository");
 
-/**
- * Like an entity (Post, Comment, etc.) by a user if not already liked
- * @param {string} entityId - The ID of the entity to unlike, we get this from parameter in the URL (:id)
- * @param {string} entityType - The type of the entity to unlike, we get this from the req.body
- * @param {string} userId - The ID of the user unliking the entity, we get the user id from the auth.middleware
- * @returns {Promise<void>}
- */
-const likeEntity = async (entityId, entityType, userId) => {
-  const like = await Like.findOne({ entityId, entityType, userId }); // Check if the user has already liked the entity
-  if (!like) {
-    await Like.create({ entityId, entityType, userId });
+class LikeService {
+  /**
+   * Like an entity if not already liked
+   */
+  async likeEntity(entityId, entityType, userId) {
+    // Business logic: Check if already liked before creating
+    const existingLike = await likeRepository.findOne(
+      entityId,
+      entityType,
+      userId
+    );
 
-    if (entityType === "Post") {
-      await Post.findByIdAndUpdate(entityId, { $inc: { likesCount: 1 } }); // Increment the likesCount of the post
+    if (!existingLike) {
+      await likeRepository.create(entityId, entityType, userId);
+
+      // Business logic: Only update counts for Post entities
+      if (entityType === "Post") {
+        await likeRepository.incrementLikeCount(entityId);
+      }
+    }
+  }
+
+  /**
+   * Unlike an entity (Post, Comment, etc.) if already liked
+   */
+  async unlikeEntity(entityId, entityType, userId) {
+    const deletedLike = await likeRepository.delete(
+      entityId,
+      entityType,
+      userId
+    );
+
+    // Business logic: Only update counts for Post entities if like existed
+    if (deletedLike && entityType === "Post") {
+      await likeRepository.decrementLikeCount(entityId);
     }
     // Add similar logic for other entity types if needed
   }
-};
 
-/**
- * Unlike an entity (Post, Comment, etc.) by a user if already liked
- * @param {string} entityId - The ID of the entity to unlike, we get this from parameter in the URL (:id)
- * @param {string} entityType - The type of the entity to unlike, we get this from the req.body
- * @param {string} userId - The ID of the user unliking the entity, we get the user id from the auth.middleware
- * @returns {Promise<void>}
- */
-const unlikeEntity = async (entityId, entityType, userId) => {
-  const like = await Like.findOneAndDelete({ entityId, entityType, userId });
-  if (like && entityType === "Post") {
-    await Post.findByIdAndUpdate(entityId, { $inc: { likesCount: -1 } }); // Decrement the likesCount of the post
+  /**
+   * Get all liked entities of a specific type
+   */
+  async getLikedEntities(userId, entityType) {
+    // Business logic: Get likes and transform to entity IDs
+    const likes = await likeRepository.findByUserAndType(userId, entityType);
+    const entityIds = likes.map((like) => like.entityId);
+
+    // Business logic: Handle different entity types
+    if (entityType === "Post") {
+      return likeRepository.findPostsByIds(entityIds);
+    }
+
+    return [];
   }
-  // Add similar logic for other entity types if needed
-};
 
-/**
- * Get all liked entities of a particular type by a user
- * @param {string} userId - The ID of the user to get liked entities
- * @param {string} entityType - The type of the entity to get liked entities
- * @returns {Promise<Post[]|Comment[]|...>} - A promise that resolves to an array of Post or Comment or ... objects
- */
-const getLikedEntities = async (userId, entityType) => {
-  const likes = await Like.find({ userId, entityType });
-  const entityIds = likes.map((like) => like.entityId);
-  if (entityType === "Post") {
-    const posts = await Post.find({ _id: { $in: entityIds } })
-      .populate("userId", "username createdAt")
-      .sort({ createdAt: -1 });
-    return posts;
+  /**
+   * Clear all liked entities of a specific type
+   */
+  async clearLikedEntities(userId, entityType) {
+    // Business logic: Get all likes and unlike each one
+    const likes = await likeRepository.findByUserAndType(userId, entityType);
+
+    // Process each like individually to ensure proper count updates
+    const unlikePromises = likes.map((like) =>
+      this.unlikeEntity(like.entityId, entityType, userId)
+    );
+
+    await Promise.all(unlikePromises);
   }
-  // Add similar logic for other entity types if needed
-};
+}
 
-/**
- * Clear all liked entities of a particular type by a user
- * @param {string} userId - The ID of the user to clear liked entities
- * @param {string} entityType - The type of the entity to clear liked entities
- * @returns {Promise<void>}
- */
-const clearLikedEntities = async (userId, entityType) => {
-  const likes = await Like.find({ userId, entityType });
-  for (const like of likes) {
-    await unlikeEntity(like.entityId, entityType, userId);
-  }
-};
-
-/**
- * Export the like service functions
- */
-module.exports = {
-  likeEntity,
-  unlikeEntity,
-  getLikedEntities,
-  clearLikedEntities,
-};
+module.exports = new LikeService();

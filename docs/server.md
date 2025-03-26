@@ -309,6 +309,21 @@ I chose to have a separate `Like` model to store likes instead of embedding them
 
 5. **Extensibility**: Having a separate `Like` model allows for easy extension of like-related functionality, such as tracking user-specific likes, timestamps, or additional metadata.
 
+## Why did I choose to not use queues for the 100 sample posts?
+
+I chose to populate the database with 100 sample posts synchronously instead of using queues for the following reasons:
+
+1. **Simplicity**: For a small number of sample posts (100), a synchronous approach is simple and straightforward to implement. Using queues for such a small task may introduce unnecessary complexity.
+
+2. **Performance**: For a small number of posts, the performance impact of a synchronous operation is minimal. The database can handle the insertion of 100 posts efficiently without the need for asynchronous processing. Especially since this is a one-time operation and with title and body being the only fields, the performance impact is negligible.
+
+If I wanted to populate a large number of posts (e.g., thousands or millions), I would consider using queues to distribute the workload and optimize performance. Queues can help manage large-scale data processing tasks efficiently by distributing the workload across multiple workers and handling failures gracefully.
+
+An example of using queues for populating a large number of posts could involve:
+
+1. **Queue System**: Implementing a queue system (e.g., RabbitMQ, Redis) to manage the task of populating posts.
+2. **Workers**: Creating worker processes to consume tasks from the queue and insert posts into the database asynchronously.
+
 ## Code Improvement
 
 Now that I am thinking about it, I could use **Class-based** code for Controllers and Services. By using the **Class-based** pattern, we can have better maintainability for Service and Controllers logic. For example:
