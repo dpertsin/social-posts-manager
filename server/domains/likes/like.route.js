@@ -4,9 +4,9 @@ const {
   unlikeEntityController,
   getLikedEntitiesController,
   clearLikedEntitiesController,
-} = require("../controllers/like.controller");
+} = require("./like.controller");
 
-const authMiddleware = require("../middlewares/auth.middleware");
+const authMiddleware = require("../../common/middlewares/auth.middleware");
 
 const router = express.Router();
 

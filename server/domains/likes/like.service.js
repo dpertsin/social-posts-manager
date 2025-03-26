@@ -1,7 +1,7 @@
 /**
  * Like service - contains business logic for like-related operations
  */
-const likeRepository = require("../repositories/like.repository");
+const likeRepository = require("./like.repository");
 
 class LikeService {
   /**

@@ -3,9 +3,9 @@ const {
   populateSamplePosts,
   addPost,
   listPosts,
-} = require("../controllers/post.controller");
+} = require("./post.controller");
 
-const authMiddleware = require("../middlewares/auth.middleware");
+const authMiddleware = require("../../common/middlewares/auth.middleware");
 
 const router = express.Router();
 

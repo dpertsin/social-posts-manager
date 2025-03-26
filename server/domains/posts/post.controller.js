@@ -1,7 +1,7 @@
 /**
  * Post controller to handle HTTP requests related to posts
  */
-const postService = require("../services/post.service");
+const postService = require("./post.service");
 
 /**
  * Populate 100 sample posts by fetching data from JSONPlaceholder

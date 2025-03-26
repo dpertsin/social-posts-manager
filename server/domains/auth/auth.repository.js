@@ -1,9 +1,9 @@
 /**
  * Auth repository - handles all database operations related to authentication
  */
-const User = require("../models/user.model");
-const Like = require("../models/like.model");
-const Post = require("../models/post.model");
+const User = require("./user.model");
+const Like = require("../likes/like.model");
+const Post = require("../posts/post.model");
 
 class AuthRepository {
   /**

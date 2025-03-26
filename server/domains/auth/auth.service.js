@@ -3,8 +3,8 @@
  */
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const authRepository = require("../repositories/auth.repository");
-const User = require("../models/user.model"); 
+const authRepository = require("./auth.repository");
+const User = require("./user.model");
 
 /**
  * Register a new user

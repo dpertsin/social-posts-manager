@@ -6,12 +6,12 @@
  */
 const request = require("supertest");
 const app = require("../app");
-const postService = require("../services/post.service");
+const postService = require("../domains/posts/post.service");
 
 /**
  * Mocking the post service to avoid making actual API calls
  */
-jest.mock("../services/post.service");
+jest.mock("../domains/posts/post.service");
 // TODO: Maybe trasnfer the POST APIs to __mocks__ and do the tests there: https://jestjs.io/docs/manual-mocks
 // TODO: When I finish the project, then connect the tests with the actual database, and test the actual database operations.
 describe("Post API", () => {

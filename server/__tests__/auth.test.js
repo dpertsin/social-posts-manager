@@ -1,8 +1,8 @@
 const request = require("supertest");
 const app = require("../app");
 const mongoose = require("mongoose");
-const User = require("../models/user.model");
-const Post = require("../models/post.model");
+const User = require("../domains/auth/user.model");
+const Post = require("../domains/posts/post.model");
 
 describe("🔏 User Authentication and Authorization Access", () => {
   let token; // Store the token to use it for Authorization header in valid requests

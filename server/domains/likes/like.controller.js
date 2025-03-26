@@ -1,7 +1,7 @@
 /**
  * Controllers for like-related endpoints
  */
-const likeService = require("../services/like.service");
+const likeService = require("./like.service");
 
 /**
  * Like an entity

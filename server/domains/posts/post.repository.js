@@ -1,7 +1,7 @@
 /**
  * Repository for Post entity - handles all database operations
  */
-const Post = require("../models/post.model");
+const Post = require("./post.model");
 
 class PostRepository {
   /**

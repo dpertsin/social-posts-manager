@@ -1,7 +1,7 @@
 /**
  * Auth controller
  */
-const authService = require("../services/auth.service");
+const authService = require("./auth.service");
 
 /**
  * Register a new user

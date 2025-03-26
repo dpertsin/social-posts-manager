@@ -1,9 +1,9 @@
 const request = require("supertest");
 const app = require("../app");
 const mongoose = require("mongoose");
-const Like = require("../models/like.model");
-const Post = require("../models/post.model");
-const User = require("../models/user.model");
+const Like = require("../domains/likes/like.model");
+const Post = require("../domains/posts/post.model");
+const User = require("../domains/auth/user.model");
 
 /*
 TODO: I don't like that I have to create and delete a test user here and in auth tests, so I have to refactor them, combine them somehow.

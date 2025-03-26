@@ -1,8 +1,8 @@
 /**
  * Repository for Like entity - handles all database operations
  */
-const Like = require("../models/like.model");
-const Post = require("../models/post.model");
+const Like = require("./like.model");
+const Post = require("../posts/post.model");
 
 class LikeRepository {
   async findOne(entityId, entityType, userId) {

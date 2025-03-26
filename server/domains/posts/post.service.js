@@ -2,7 +2,7 @@
  * Post service - handles all business logic
  */
 const axios = require("axios");
-const postRepository = require("../repositories/post.repository");
+const postRepository = require("./post.repository");
 
 class PostService {
   /**
