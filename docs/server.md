@@ -21,7 +21,9 @@ I followed the TDD (Test-Driven Development) approach to build the backend of th
     - [Clear All Liked Posts](#clear-all-liked-posts)
 - [Authentication Practices](#authentication-practices)
 - [Why did I choose to have the likes in new model and not inside the Post model?](#why-did-i-choose-to-have-the-likes-in-new-model-and-not-inside-the-post-model)
+- [Why did I choose to not use queues for the 100 sample posts?](#why-did-i-choose-to-not-use-queues-for-the-100-sample-posts)
 - [Code Improvement](#code-improvement)
+- [Repository Pattern Implementation](#repository-pattern-implementation)
 - [Areas for Improvements](#areas-for-improvements)
 
 ## Overview of Design Decisions
@@ -42,20 +44,26 @@ The backend of the Social Posts Manager application is built using Express.js, a
 
 7. **Load More Option**: Implemented a "load more" feature to improve performance and user experience. Instead of retrieving all posts at once, an endpoint is created to fetch posts in batches (e.g., 30 posts at a time). This allows the frontend to load only the visible posts initially and load more posts as the user scrolls or clicks a "load more" button.
 
+8. **Repository Pattern**: Implemented a repository pattern to separate data access logic from business logic, improving testability and maintainability.
+
+9. **Domain-Driven Design**: Organized the codebase by domain/feature rather than technical function, creating clear boundaries between different parts of the application.
+
 
 ## Structure of the Backend
 
-The backend is organized into the following main directories:
+The backend has been reorganized into a domain-driven structure with the following main directories:
 
-- **__tests__**: Contains test files for unit and integration testing.
+- **__tests__**: Contains test files for unit and integration testing
 - **bin**: Contains the server startup script.
-- **controllers**: Contains the controller files for handling HTTP requests and responses.
-- **middlewares**: Contains middleware functions for request processing.
-- **models**: Contains the Mongoose models for the application's data structures.
-- **routes**: Contains the route definitions for the application's endpoints.
-- **services**: Contains the service files for business logic and data manipulation.
-- **app.js**: The entry point of the application, where the server is started.
-- **database.js**: Config file for connecting to MongoDB.
+- **common**: Contains shared utilities and middleware:
+  - **middlewares**: Contains middleware functions for request processing
+  - **utils**: Contains utility functions used across domains
+- **config**: Contains configuration files (database connection, etc.)
+- **domains**: Contains domain-specific modules organized by feature:
+  - **auth**: Authentication-related files (controller, service, repository, model, routes)
+  - **posts**: Post-related files (controller, service, repository, model, routes)
+  - **likes**: Like-related files (controller, service, repository, model, routes)
+- **app.js**: The entry point of the application where Express is configured
 
 ## API Documentation
 
@@ -350,6 +358,34 @@ module.exports = new LikeController();
 ```
 
 This way we can export only the instance of the class and have a better organization of the code.
+
+## Repository Pattern Implementation
+
+The application now implements the repository pattern to achieve better separation of concerns:
+
+1. **Repository Layer**: Each domain has a dedicated repository that handles all database operations:
+   - `auth.repository.js`: Handles user-related database operations
+   - `post.repository.js`: Handles post-related database operations
+   - `like.repository.js`: Handles like-related database operations
+
+2. **Service Layer**: Services contain business logic and use repositories for data access:
+   ```javascript
+   class LikeService {
+     async likeEntity(entityId, entityType, userId) {
+       // Business logic
+       const existingLike = await likeRepository.findOne(entityId, entityType, userId);
+       
+       if (!existingLike) {
+         await likeRepository.create(entityId, entityType, userId);
+         
+         // Only update counts for specific entity types
+         if (entityType === "Post") {
+           await likeRepository.incrementLikeCount(entityId);
+         }
+       }
+     }
+   }
+   ```
 
 ## Areas for Improvements
 
