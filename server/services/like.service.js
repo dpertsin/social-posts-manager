@@ -8,7 +8,7 @@ class LikeService {
    * Like an entity if not already liked
    */
   async likeEntity(entityId, entityType, userId) {
-    // Business logic: Check if already liked before creating
+    // Check if already liked before creating
     const existingLike = await likeRepository.findOne(
       entityId,
       entityType,
@@ -18,7 +18,7 @@ class LikeService {
     if (!existingLike) {
       await likeRepository.create(entityId, entityType, userId);
 
-      // Business logic: Only update counts for Post entities
+      // Only update counts for Post entities
       if (entityType === "Post") {
         await likeRepository.incrementLikeCount(entityId);
       }
@@ -35,7 +35,7 @@ class LikeService {
       userId
     );
 
-    // Business logic: Only update counts for Post entities if like existed
+    // Only update counts for Post entities if like existed
     if (deletedLike && entityType === "Post") {
       await likeRepository.decrementLikeCount(entityId);
     }
@@ -46,11 +46,11 @@ class LikeService {
    * Get all liked entities of a specific type
    */
   async getLikedEntities(userId, entityType) {
-    // Business logic: Get likes and transform to entity IDs
+    // Get likes and transform to entity IDs
     const likes = await likeRepository.findByUserAndType(userId, entityType);
     const entityIds = likes.map((like) => like.entityId);
 
-    // Business logic: Handle different entity types
+    // Handle different entity types
     if (entityType === "Post") {
       return likeRepository.findPostsByIds(entityIds);
     }
@@ -62,7 +62,7 @@ class LikeService {
    * Clear all liked entities of a specific type
    */
   async clearLikedEntities(userId, entityType) {
-    // Business logic: Get all likes and unlike each one
+    // Get all likes and unlike each one
     const likes = await likeRepository.findByUserAndType(userId, entityType);
 
     // Process each like individually to ensure proper count updates
