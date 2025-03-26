@@ -1,8 +1,5 @@
 /**
  * Model for Like collection in MongoDB database using Mongoose ODM
- * @description Defines the structure of documents in the Like collection in MongoDB
- * @requires mongoose
- * @exports Like
  */
 const mongoose = require("mongoose");
 
@@ -31,9 +28,6 @@ const likeSchema = new mongoose.Schema(
   }
 );
 
-/**
- * Like model to perform CRUD operations on Like collection in MongoDB
- */
 const Like = mongoose.model("Like", likeSchema);
 
 module.exports = Like;

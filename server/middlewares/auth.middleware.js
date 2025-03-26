@@ -1,17 +1,11 @@
 /**
- * Auth Middleware to verify token
- * @requires jsonwebtoken
- * @exports authMiddleware
+ * Middleware to verify JWT authentication tokens
  */
 const jwt = require("jsonwebtoken");
 
 /**
- * Auth Middleware to verify token
- * @description Check if the token is provided in the Authorization header and verify it using the JWT_SECRET key
- * @param {Object} req - Request object
- * @param {Object} res - Response object
- * @param {Function} next - Next middleware function
- * @returns {Object} - Response object
+ * Verifies the JWT token from Authorization header
+ * Adds the decoded user info to req.user when valid
  */
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers["authorization"];

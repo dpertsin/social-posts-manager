@@ -1,17 +1,12 @@
 /**
  * Connect to MongoDB database using Mongoose ODM
- * @requires mongoose
- * @exports connectDB
  */
 const mongoose = require("mongoose");
 
-/**
- * Connect to MongoDB database
- */
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    if (process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV !== "test") {
       console.log("🍃 MongoDB connected");
     }
   } catch (error) {

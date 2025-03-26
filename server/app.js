@@ -1,8 +1,3 @@
-/**
- * This file is the entry point for the server.
- * It sets up the server and mounts the routers.
- * @exports app
- */
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -22,17 +17,16 @@ var connectDB = require("./database");
 
 var app = express();
 
-connectDB(); // Connect to the database
+connectDB();
 
-app.use(logger("dev")); // Log requests to the console
-app.use(express.json()); // Middleware to parse JSON bodies
-app.use(express.urlencoded({ extended: false })); // Parse URL-encoded bodies
-app.use(cookieParser()); // Parse Cookie headers
-app.use(express.static(path.join(__dirname, "public"))); // Serve static files
-app.use(cors()); // Enable CORS for all requests
-app.use(helmet()); // Secure the app by setting various HTTP headers
+app.use(logger("dev")); 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false })); 
+app.use(cookieParser()); 
+app.use(express.static(path.join(__dirname, "public"))); 
+app.use(cors()); 
+app.use(helmet()); 
 
-/*  Mount the routers on the app */
 app.use("/", indexRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/auth", authRouter);

@@ -1,9 +1,5 @@
 /**
  * Model for User collection in MongoDB database using Mongoose ODM
- * @description Defines the structure of documents in the User collection in MongoDB and hashes the password before saving the user to the database
- * @requires mongoose
- * @requires bcrypt
- * @exports User
  */
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -36,9 +32,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-/**
- * User model to perform CRUD operations on User collection in MongoDB
- */
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
